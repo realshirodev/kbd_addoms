@@ -2,7 +2,7 @@ import bpy
 import os
 import subprocess
 
-from ..core.ora_manager import create_transparent_png, create_ora_file
+from ..core.ora_manager import create_transparent_png, create_solid_png, create_ora_file
 from ..core.sync_timer import start_sync_timer
 
 class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
@@ -26,6 +26,7 @@ class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
         temp_dir = bpy.app.tempdir
         uv_path = os.path.join(temp_dir, f"{obj.name}_UV_Guide.png")
         paint_path = os.path.join(temp_dir, f"{obj.name}_Paint.png")
+        bg_path = os.path.join(temp_dir, f"{obj.name}_Background.png")
         ora_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.ora")
         texture_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.png")
 
@@ -40,14 +41,19 @@ class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
         )
         bpy.ops.object.mode_set(mode='OBJECT')
 
-        # 3. Crear capa de pintura vacía (transparente) y archivo base para Blender
+        # 3. Crear capas:
+        #    - Capa de pintura: transparente
+        #    - Capa de fondo: blanco sólido (para evitar que el modelo se vuelva negro)
+        #    - Textura base de Blender: blanca sólida inicial
         create_transparent_png(paint_path, resolution, resolution)
-        create_transparent_png(texture_path, resolution, resolution)
+        create_solid_png(bg_path, resolution, resolution, 255, 255, 255, 255)
+        create_solid_png(texture_path, resolution, resolution, 255, 255, 255, 255)
 
-        # 4. Crear archivo ORA con 2 capas:
-        #    - Capa superior: "Pintura" (vacía para dibujar)
-        #    - Capa inferior: "UV Guide" (referencia del mapa UV)
-        create_ora_file(ora_path, paint_path, uv_path, resolution, resolution)
+        # 4. Crear archivo ORA con 3 capas:
+        #    - Superior: "Pintura" (vacía, donde pintas)
+        #    - Intermedia: "UV Guide" (guía de referencia)
+        #    - Inferior: "Fondo" (blanco sólido)
+        create_ora_file(ora_path, paint_path, uv_path, bg_path, resolution, resolution)
 
         # 5. Cargar textura en memoria de Blender
         img = bpy.data.images.load(texture_path, check_existing=False)
@@ -83,14 +89,21 @@ class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
         if bsdf:
             links.new(tex_node.outputs['Color'], bsdf.inputs['Base Color'])
 
-        # 7. Activar el Auto-Reload de Texturas
+        # 7. Cambiar la vista 3D a Material Preview automáticamente para que se vea la textura
+        for area in context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for space in area.spaces:
+                    if space.type == 'VIEW_3D':
+                        space.shading.type = 'MATERIAL'
+
+        # 8. Activar el Auto-Reload de Texturas
         start_sync_timer()
 
-        # 8. Lanzar Krita con el archivo multicapa (.ora)
+        # 9. Lanzar Krita con el archivo multicapa (.ora)
         if os.path.exists(krita_path):
             try:
                 subprocess.Popen([krita_path, ora_path])
-                self.report({'INFO'}, "Proyecto multicapa creado: 'Pintura' (arriba vacía) y 'UV Guide' (debajo). Krita iniciado.")
+                self.report({'INFO'}, "Proyecto Krita iniciado. Modo Material Preview activado.")
             except Exception as e:
                 self.report({'ERROR'}, f"Error al lanzar Krita: {str(e)}")
         else:

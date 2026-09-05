@@ -49,12 +49,18 @@ def check_and_reload_textures():
                         continue
 
                 last_modified_times[file_to_track] = mtime
+                
+                # Recargar y actualizar datos en memoria GPU de Blender
                 img.reload()
+                try:
+                    img.update()
+                except Exception:
+                    pass
 
-                # Forzar refresco inmediato del Viewport 3D
+                # Forzar refresco inmediato del Viewport 3D y del Image Editor (UV Editor)
                 for window in bpy.context.window_manager.windows:
                     for area in window.screen.areas:
-                        if area.type == 'VIEW_3D':
+                        if area.type in ('VIEW_3D', 'IMAGE_EDITOR'):
                             area.tag_redraw()
 
                 print(f"[Krita-Sync] Textura recargada automáticamente: {img.name}")
