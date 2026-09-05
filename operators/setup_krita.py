@@ -1,5 +1,6 @@
 import bpy
 import os
+import tempfile
 import subprocess
 
 from ..core.ora_manager import create_transparent_png, create_solid_png, create_ora_file
@@ -19,27 +20,49 @@ class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
             self.report({'ERROR'}, "Selecciona un objeto MESH activo")
             return {'CANCELLED'}
 
+        # Comprobar si el objeto tiene UV Maps
+        if not obj.data.uv_layers:
+            self.report({'ERROR'}, "El objeto no tiene UV Maps. Desenvuelve las UVs primero (U > Unwrap)")
+            return {'CANCELLED'}
+
         resolution = int(scene.krita_canvas_size)
         krita_path = scene.krita_executable_path
 
-        # 1. Definir rutas de archivos temporales
-        temp_dir = bpy.app.tempdir
+        # 1. Definir directorio temporal garantizado
+        temp_dir = os.path.join(tempfile.gettempdir(), "krita_sync_textures")
+        os.makedirs(temp_dir, exist_ok=True)
+
         uv_path = os.path.join(temp_dir, f"{obj.name}_UV_Guide.png")
         paint_path = os.path.join(temp_dir, f"{obj.name}_Paint.png")
         bg_path = os.path.join(temp_dir, f"{obj.name}_Background.png")
         ora_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.ora")
         texture_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.png")
 
-        # 2. Exportar el Mapa de UVs como capa de guía
-        bpy.ops.object.mode_set(mode='EDIT')
-        bpy.ops.uv.select_all(action='SELECT')
-        bpy.ops.uv.export_layout(
-            filepath=uv_path,
-            size=(resolution, resolution),
-            opacity=0.4,
-            modified=True
-        )
-        bpy.ops.object.mode_set(mode='OBJECT')
+        # Limpiar posibles archivos previos bloqueados
+        for p in (uv_path, paint_path, bg_path, ora_path):
+            if os.path.exists(p):
+                try:
+                    os.remove(p)
+                except Exception:
+                    pass
+
+        # 2. Exportar el Mapa de UVs seleccionando toda la geometría
+        try:
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.select_all(action='SELECT')
+            bpy.ops.uv.select_all(action='SELECT')
+            bpy.ops.uv.export_layout(
+                filepath=uv_path,
+                size=(resolution, resolution),
+                opacity=0.4,
+                modified=True
+            )
+            bpy.ops.object.mode_set(mode='OBJECT')
+        except Exception as e:
+            if bpy.context.object and bpy.context.object.mode != 'OBJECT':
+                bpy.ops.object.mode_set(mode='OBJECT')
+            self.report({'ERROR'}, f"No se pudo exportar el UV Layout: {str(e)}")
+            return {'CANCELLED'}
 
         # 3. Crear capas:
         #    - Capa de pintura: transparente
