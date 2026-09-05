@@ -32,11 +32,21 @@ class OBJECT_OT_setup_krita_texture(bpy.types.Operator):
         temp_dir = os.path.join(tempfile.gettempdir(), "krita_sync_textures")
         os.makedirs(temp_dir, exist_ok=True)
 
-        uv_path = os.path.join(temp_dir, f"{obj.name}_UV_Guide.png")
-        paint_path = os.path.join(temp_dir, f"{obj.name}_Paint.png")
-        bg_path = os.path.join(temp_dir, f"{obj.name}_Background.png")
-        ora_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.ora")
-        texture_path = os.path.join(temp_dir, f"{obj.name}_BaseColor.png")
+        uv_path = os.path.normpath(os.path.join(temp_dir, f"{obj.name}_UV_Guide.png"))
+        paint_path = os.path.normpath(os.path.join(temp_dir, f"{obj.name}_Paint.png"))
+        bg_path = os.path.normpath(os.path.join(temp_dir, f"{obj.name}_Background.png"))
+        ora_path = os.path.normpath(os.path.join(temp_dir, f"{obj.name}_BaseColor.ora"))
+        texture_path = os.path.normpath(os.path.join(temp_dir, f"{obj.name}_BaseColor.png"))
+
+        # Liberar imágenes cargadas en Blender para evitar bloqueos de archivo en Windows
+        for img_block in list(bpy.data.images):
+            if img_block.filepath:
+                try:
+                    f_abs = os.path.normpath(bpy.path.abspath(img_block.filepath))
+                    if f_abs in (uv_path, texture_path):
+                        bpy.data.images.remove(img_block)
+                except Exception:
+                    pass
 
         # Limpiar posibles archivos previos bloqueados
         for p in (uv_path, paint_path, bg_path, ora_path):
