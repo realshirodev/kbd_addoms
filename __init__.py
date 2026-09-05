@@ -9,6 +9,18 @@ bl_info = {
     "youtube channel": "https://www.youtube.com/@shiro_dev"
 }
 
+import sys
+import importlib
+
+# Recarga dinámica automática si Blender ya tenía los submódulos en caché
+if "bpy" in locals():
+    for mod_name in list(sys.modules.keys()):
+        if mod_name.startswith(__name__ + "."):
+            try:
+                importlib.reload(sys.modules[mod_name])
+            except Exception:
+                pass
+
 import bpy
 from .core.security import verify_author_integrity
 from .core.sync_timer import stop_sync_timer
