@@ -8,7 +8,7 @@ bl_info = {
     "category": "Material",
     "doc_url": "https://teamapricot.com/marketplace/krita-live-texturing-for-blender",
     "website": "https://teamapricot.com",
-    "youtube channel": "https://www.youtube.com/@shiro_dev"
+    "youtube_channel": "https://www.youtube.com/@shiro_dev"
 }
 
 import sys
