@@ -1,5 +1,6 @@
 # Krita Live Texturing - Lanzador de compatibilidad
 # Desarrollador: ShiroDev (https://www.youtube.com/@shiro_dev)
+# Sitio Web: https://teamapricot.com
 
 import os
 import sys

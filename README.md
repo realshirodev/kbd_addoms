@@ -3,6 +3,7 @@
 [![Blender Version](https://img.shields.io/badge/Blender-4.0%2B-orange?logo=blender&logoColor=white)](https://www.blender.org/)
 [![Krita](https://img.shields.io/badge/Krita-Compatible-blue?logo=krita&logoColor=white)](https://krita.org/)
 [![Developer](https://img.shields.io/badge/Developer-ShiroDev-red?logo=youtube&logoColor=white)](https://www.youtube.com/@shiro_dev)
+[![Website](https://img.shields.io/badge/Website-Team%20Apricot-success?logo=google-chrome&logoColor=white)](https://teamapricot.com)
 
 **Krita Live Texturing** es un complemento para Blender diseñado para acelerar y automatizar el flujo de trabajo de texturizado 2D en modelos 3D usando **Krita**. 
 
@@ -81,6 +82,7 @@ kbd_addoms/
 Creado y desarrollado por **ShiroDev**.
 
 - 📺 **YouTube**: [@shiro_dev](https://www.youtube.com/@shiro_dev)
+- 🌐 **Sitio Web**: [Team Apricot (teamapricot.com)](https://teamapricot.com)
 
 ---
 

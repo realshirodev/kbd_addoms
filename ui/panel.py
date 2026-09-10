@@ -32,3 +32,6 @@ class VIEW3D_PT_krita_sync_panel(bpy.types.Panel):
         
         url_op = box.operator("wm.url_open", text="YouTube Channel", icon='URL')
         url_op.url = "https://www.youtube.com/@shiro_dev"
+        
+        site_op = box.operator("wm.url_open", text="Team Apricot", icon='GLOBE')
+        site_op.url = "https://teamapricot.com"

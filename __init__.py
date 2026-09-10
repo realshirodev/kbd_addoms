@@ -6,6 +6,8 @@ bl_info = {
     "location": "View3D > Sidebar > Krita Sync",
     "description": "Automatiza la exportacion de UVs, creacion de lienzo y sincronizacion con Krita",
     "category": "Material",
+    "doc_url": "https://teamapricot.com/marketplace/krita-live-texturing-for-blender",
+    "website": "https://teamapricot.com",
     "youtube channel": "https://www.youtube.com/@shiro_dev"
 }
 
