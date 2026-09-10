@@ -3,7 +3,7 @@
 [![Blender Version](https://img.shields.io/badge/Blender-4.0%2B-orange?logo=blender&logoColor=white)](https://www.blender.org/)
 [![Krita](https://img.shields.io/badge/Krita-Compatible-blue?logo=krita&logoColor=white)](https://krita.org/)
 [![Developer](https://img.shields.io/badge/Developer-ShiroDev-red?logo=youtube&logoColor=white)](https://www.youtube.com/@shiro_dev)
-[![Website](https://img.shields.io/badge/Website-Team%20Apricot-success?logo=google-chrome&logoColor=white)](https://teamapricot.com)
+[![Website](https://img.shields.io/badge/Website-Team%20Apricot-success?logo=google-chrome&logoColor=white)](https://teamapricot.com/marketplace/krita-live-texturing-for-blender)
 
 **Krita Live Texturing** es un complemento para Blender diseñado para acelerar y automatizar el flujo de trabajo de texturizado 2D en modelos 3D usando **Krita**. 
 
@@ -33,7 +33,7 @@ Exporta las UVs de tu modelo, genera un proyecto multicapa nativo y abre Krita a
 
 ## 📥 Instalación
 
-1. Descarga el repositorio o clónalo:
+1. Descarga el complemento directamente desde [Team Apricot Marketplace](https://teamapricot.com/marketplace/krita-live-texturing-for-blender) o clónalo:
    ```bash
    git clone https://github.com/tu-usuario/kbd_addoms.git
    ```
@@ -82,7 +82,8 @@ kbd_addoms/
 Creado y desarrollado por **ShiroDev**.
 
 - 📺 **YouTube**: [@shiro_dev](https://www.youtube.com/@shiro_dev)
-- 🌐 **Sitio Web**: [Team Apricot (teamapricot.com)](https://teamapricot.com)
+- 🌐 **Sitio Web**: [teamapricot.com](https://teamapricot.com)
+- 🛒 **Página Oficial**: [Krita Live Texturing en Team Apricot](https://teamapricot.com/marketplace/krita-live-texturing-for-blender)
 
 ---
 
