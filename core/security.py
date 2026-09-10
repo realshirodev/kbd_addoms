@@ -17,7 +17,7 @@ def verify_author_integrity(bl_info: dict) -> bool:
     """Verifica que el desarrollador y canal no hayan sido alterados."""
     try:
         author = bl_info.get("author", "")
-        yt_channel = bl_info.get("youtube channel", "")
+        yt_channel = bl_info.get("youtube_channel") or bl_info.get("youtube channel", "")
 
         expected_author = base64.b64decode(_SIG_CHECK).decode('utf-8')
         expected_yt = base64.b64decode(_YT_CHECK).decode('utf-8')
