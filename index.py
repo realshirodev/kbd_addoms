@@ -11,7 +11,7 @@ if _current_dir not in sys.path:
 
 import __init__ as kbd_addon
 
-bl_info = kbd_addon.bl_info
+bl_info = getattr(kbd_addon, "bl_info", getattr(kbd_addon, "_ADDON_INFO", None))
 
 def register():
     kbd_addon.register()

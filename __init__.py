@@ -1,4 +1,4 @@
-bl_info = {
+_ADDON_INFO = {
     "name": "Krita Live Texturing",
     "author": "ShiroDev",
     "version": (1, 1, 0),
@@ -10,6 +10,9 @@ bl_info = {
     "website": "https://teamapricot.com",
     "youtube_channel": "https://www.youtube.com/@shiro_dev"
 }
+
+# Diccionario bl_info para compatibilidad con versiones legacy de Blender (4.0 - 4.1)
+bl_info = _ADDON_INFO.copy()
 
 import sys
 import importlib
@@ -36,7 +39,10 @@ classes = operator_classes + (
 
 def register():
     # Validación de integridad de autoría
-    if not verify_author_integrity(bl_info):
+    # En Blender 4.2+ y 5.x Extensions, Blender ejecuta 'del mod.bl_info' tras importar.
+    # Usamos _ADDON_INFO como respaldo seguro para evitar errores 'name bl_info is not defined'.
+    info = globals().get("bl_info") or _ADDON_INFO
+    if not verify_author_integrity(info):
         raise RuntimeError(
             "\n[SEGURIDAD] Error de integridad: Este complemento ha sido modificado o la autoría "
             "original de 'ShiroDev' ha sido alterada. El addon no puede iniciarse."
