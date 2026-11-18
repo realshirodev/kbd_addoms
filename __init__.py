@@ -1,10 +1,10 @@
 bl_info = {
     "name": "Krita Live Texturing",
     "author": "ShiroDev",
-    "version": (1, 0),
+    "version": (1, 1, 0),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > Krita Sync",
-    "description": "Automatiza la exportacion de UVs, creacion de lienzo y sincronizacion con Krita",
+    "description": "Automatiza la exportacion de UVs, creacion de lienzo multicapa, soporte PBR y sincronizacion con Krita",
     "category": "Material",
     "doc_url": "https://teamapricot.com/marketplace/krita-live-texturing-for-blender",
     "website": "https://teamapricot.com",
@@ -27,11 +27,10 @@ import bpy
 from .core.security import verify_author_integrity
 from .core.sync_timer import stop_sync_timer
 from .properties import register_properties, unregister_properties
-from .operators.setup_krita import OBJECT_OT_setup_krita_texture
+from .operators import operator_classes
 from .ui.panel import VIEW3D_PT_krita_sync_panel
 
-classes = (
-    OBJECT_OT_setup_krita_texture,
+classes = operator_classes + (
     VIEW3D_PT_krita_sync_panel,
 )
 

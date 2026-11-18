@@ -1,0 +1,19 @@
+schema_version = "1.0.0"
+
+id = "krita_live_texturing"
+version = "1.1.0"
+name = "Krita Live Texturing"
+tagline = "Flujo de texturizado en tiempo real con Krita, exportación UV y sincronización automática"
+maintainer = "ShiroDev <https://www.youtube.com/@shiro_dev>"
+type = "add-on"
+
+blender_version_min = "4.0.0"
+license = [
+    "SPDX:MIT",
+]
+
+website = "https://teamapricot.com/marketplace/krita-live-texturing-for-blender"
+tags = ["Material", "Texturing", "Paint"]
+
+permissions = ["files"]
+
